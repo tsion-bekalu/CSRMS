@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/x-icon" href="image.png" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <title>CSRMS</title>
+
+    <style>
+      :root {
+        --primary-blue: #1f4fd8;
+        --dark-blue: #143aa8;
+        --text-dark: #1a1a1a;
+        --text-gray: #6b7280;
+        --light-gray: #f4f6fb;
+        --card-border: #e5e7eb;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Georgia", serif;
+      }
+
+      body {
+        background: white;
+        color: var(--text-dark);
+        line-height: 1.6;
+      }
+
+      /* ===== HERO ===== */
+
+      .hero {
+        background: var(--primary-blue);
+        color: white;
+        text-align: center;
+        padding: 90px 20px 70px;
+      }
+      .hero img {
+        width: 100px;
+        height: 100px;
+      }
+
+      .hero h1 {
+        font-size: 42px;
+        font-weight: 700;
+        line-height: 1.25;
+        margin-bottom: 20px;
+      }
+
+      .hero p {
+        font-size: 16px;
+        max-width: 700px;
+        margin: 0 auto 35px;
+        opacity: 0.95;
+      }
+
+      .hero-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 16px;
+        margin-bottom: 40px;
+      }
+
+      .btn {
+        padding: 12px 22px;
+        border-radius: 8px;
+        font-size: 14px;
+        cursor: pointer;
+        border: none;
+        font-weight: 600;
+        text-decoration: none;
+      }
+
+      .btn-light {
+        background: white;
+        color: var(--primary-blue);
+      }
+
+      .btn-dark {
+        background: #111827;
+        color: white;
+      }
+
+      .hero-meta {
+        display: flex;
+        justify-content: center;
+        gap: 28px;
+        font-size: 13px;
+        opacity: 0.9;
+        flex-wrap: wrap;
+      }
+
+      .hero-meta span::before {
+        content: "✔";
+        margin-right: 6px;
+      }
+
+      /* ===== SECTION ==== */
+
+      section {
+        padding: 80px 20px;
+      }
+
+      .container {
+        max-width: 1150px;
+        margin: auto;
+      }
+
+      h2 {
+        text-align: center;
+        font-size: 32px;
+        margin-bottom: 10px;
+      }
+
+      .section-subtitle {
+        text-align: center;
+        color: var(--text-gray);
+        max-width: 650px;
+        margin: 0 auto 55px;
+        font-size: 15px;
+      }
+
+      /* ==== FEATURES ==== */
+
+      .features {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 24px;
+      }
+
+      .card {
+        background: white;
+        border: 1px solid var(--card-border);
+        border-radius: 14px;
+        padding: 28px;
+        text-align: left;
+      }
+
+      .icon {
+        width: 42px;
+        height: 42px;
+        border-radius: 10px;
+        background: var(--light-gray);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        margin-bottom: 18px;
+      }
+
+      .card h3 {
+        font-size: 17px;
+        margin-bottom: 10px;
+      }
+
+      .card p {
+        font-size: 14px;
+        color: var(--text-gray);
+      }
+
+      /* ==== STATS ==== */
+
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 24px;
+        margin-top: 40px;
+      }
+
+      .stat {
+        border: 1px solid var(--card-border);
+        border-radius: 14px;
+        padding: 28px;
+        text-align: center;
+      }
+
+      .stat .number {
+        font-size: 28px;
+        font-weight: 700;
+        margin-bottom: 6px;
+      }
+
+      .stat.blue .number {
+        color: #2563eb;
+      }
+
+      .stat.green .number {
+        color: #16a34a;
+      }
+
+      .stat.indigo .number {
+        color: #4f46e5;
+      }
+
+      .stat.orange .number {
+        color: #ea580c;
+      }
+
+      .stat p {
+        font-size: 14px;
+        color: var(--text-gray);
+      }
+
+      /* ==== FOOT NOTE ==== */
+
+      .footer-note {
+        text-align: center;
+        margin-top: 60px;
+        font-size: 14px;
+        color: var(--text-gray);
+      }
+
+      .footer-icons {
+        display: flex;
+        justify-content: center;
+        gap: 24px;
+        margin-top: 12px;
+        font-size: 13px;
+      }
+
+      .footer-icons span::before {
+        content: "✔";
+        margin-right: 6px;
+      }
+
+      /* ===RESPONSIVE ==== */
+
+      @media (max-width: 600px) {
+        .hero h1 {
+          font-size: 32px;
+        }
+      }
+      /* ===== HOW IT WORKS ==== */
+      .steps {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+        gap: 30px;
+        margin-top: 50px;
+      }
+
+      .step {
+        text-align: center;
+        padding: 20px;
+      }
+
+      .step-icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 16px;
+        font-size: 22px;
+        color: white;
+      }
+
+      .step-icon.blue {
+        background: #2563eb;
+      }
+
+      .step-icon.green {
+        background: #16a34a;
+      }
+
+      .step-icon.indigo {
+        background: #4f46e5;
+      }
+
+      .step h4 {
+        font-size: 16px;
+        margin-bottom: 8px;
+      }
+
+      .step p {
+        font-size: 14px;
+        color: var(--text-gray);
+      }
+      /* ====== CTA ====== */
+      .cta {
+        background: var(--primary-blue);
+        color: white;
+        text-align: center;
+        padding: 80px 20px;
+      }
+
+      .cta h2 {
+        font-size: 32px;
+        margin-bottom: 12px;
+      }
+
+      .cta p {
+        max-width: 600px;
+        margin: 0 auto 25px;
+        font-size: 15px;
+        opacity: 0.95;
+      }
+
+      .cta-meta {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        font-size: 13px;
+        margin-bottom: 30px;
+        flex-wrap: wrap;
+      }
+
+      .cta-meta span::before {
+        content: "✔️";
+        margin-right: 6px;
+      }
+      /* ===== FOOTER ======= */
+      .footer {
+        background: #0f172a;
+        color: #cbd5f5;
+        padding: 60px 20px 30px;
+      }
+
+      .footer-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 30px;
+      }
+
+      .footer h4 {
+        margin-bottom: 12px;
+        color: white;
+      }
+
+      .footer p,
+      .footer li {
+        font-size: 14px;
+        color: #cbd5f5;
+        list-style: none;
+        margin-bottom: 6px;
+      }
+
+      .footer-bottom {
+        text-align: center;
+        margin-top: 40px;
+        font-size: 13px;
+        color: #94a3b8;
+      }
+      /* =======SOCIAL ICONS ====== */
+      .social-icons {
+        display: flex;
+        gap: 12px;
+        margin-top: 12px;
+      }
+
+      .social-icons a {
+        width: 36px;
+        height: 36px;
+        background: #1e293b;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        font-size: 14px;
+        transition: background 0.3s ease;
+      }
+
+      .social-icons a:hover {
+        background: var(--primary-blue);
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- HERO -->
+    <div class="hero">
+      <img src="image.png" alt="CSRMS logo" />
+      <h1>
+        Empowering Communities<br />
+        Through Digital Infrastructure<br />
+        Reporting
+      </h1>
+
+      <p>
+        Report infrastructure issues, track progress, and help build better
+        communities. Join thousands of citizens making a difference in their
+        neighborhoods.
+      </p>
+
+      <div class="hero-buttons">
+        <a href="login.html" class="btn btn-light">👤 Citizen Portal</a>
+        <a href="admin login.html" class="btn btn-dark">⚙ Admin Portal</a>
+      </div>
+
+      <div class="hero-meta">
+        <span>SSL Secured</span>
+        <span>Government Compliant</span>
+        <span>Trusted by 10,000+ Citizens</span>
+        <span>24/7 Available</span>
+      </div>
+    </div>
+
+    <!-- FEATURES -->
+    <section>
+      <div class="container">
+        <h2>Transforming Infrastructure Management</h2>
+        <p class="section-subtitle">
+          Our platform bridges the gap between citizens and local government,
+          creating a seamless experience for reporting and resolving
+          infrastructure issues.
+        </p>
+
+        <div class="features">
+          <div class="card">
+            <div class="icon">📄</div>
+            <h3>Easy Reporting</h3>
+            <p>
+              Submit infrastructure issues with photos, location details, and
+              comprehensive descriptions in just a few clicks.
+            </p>
+          </div>
+
+          <div class="card">
+            <div class="icon">👁</div>
+            <h3>Real-time Tracking</h3>
+            <p>
+              Monitor the progress of your reports from submission to resolution
+              with live status updates and notifications.
+            </p>
+          </div>
+
+          <div class="card">
+            <div class="icon">📊</div>
+            <h3>Data-Driven Insights</h3>
+            <p>
+              Access comprehensive analytics and reporting tools to understand
+              community infrastructure trends and priorities.
+            </p>
+          </div>
+
+          <div class="card">
+            <div class="icon">👥</div>
+            <h3>Community Engagement</h3>
+            <p>
+              Connect with local government officials and fellow citizens to
+              collaborate on neighborhood improvements.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STATS -->
+    <section>
+      <div class="container">
+        <h2>Making a Real Impact</h2>
+        <p class="section-subtitle">
+          See how our platform is transforming communities across the nation
+          through efficient infrastructure reporting and resolution.
+        </p>
+
+        <div class="stats">
+          <div class="stat blue">
+            <div class="number">25,847</div>
+            <p>Reports Submitted</p>
+          </div>
+
+          <div class="stat green">
+            <div class="number">21,203</div>
+            <p>Issues Resolved</p>
+          </div>
+
+          <div class="stat indigo">
+            <div class="number">12,456</div>
+            <p>Active Citizens</p>
+          </div>
+
+          <div class="stat orange">
+            <div class="number">4.2 days</div>
+            <p>Average Resolution</p>
+          </div>
+        </div>
+
+        <div class="footer-note">
+          Join thousands of citizens making a difference in their communities
+          <div class="footer-icons">
+            <span>Instant notifications</span>
+            <span>Mobile-friendly</span>
+            <span>Secure & private</span>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- HOW IT WORKS -->
+    <section>
+      <div class="container">
+        <h2>How It Works</h2>
+        <p class="section-subtitle">
+          Getting started with CivicReport is simple. Follow these four easy
+          steps to begin making a difference in your community.
+        </p>
+
+        <div class="steps">
+          <div class="step">
+            <div class="step-icon blue">👤</div>
+            <h4>Create Account</h4>
+            <p>
+              Sign up as a citizen or admin to access the reporting platform
+              with your email and basic information.
+            </p>
+          </div>
+
+          <div class="step">
+            <div class="step-icon green">📸</div>
+            <h4>Report Issues</h4>
+            <p>
+              Submit infrastructure problems with photos, location details, and
+              clear descriptions.
+            </p>
+          </div>
+
+          <div class="step">
+            <div class="step-icon indigo">👁</div>
+            <h4>Track Progress</h4>
+            <p>
+              Monitor your report status in real time from submission to
+              resolution.
+            </p>
+          </div>
+
+          <div class="step">
+            <div class="step-icon green">✔</div>
+            <h4>See Results</h4>
+            <p>
+              Receive notifications when your issue is resolved and see
+              community impact.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- READY TO GET STARTED -->
+    <section class="cta">
+      <h2>Ready to Get Started?</h2>
+      <p>
+        Join our community of engaged citizens working together to improve local
+        infrastructure.
+      </p>
+
+      <div class="cta-meta">
+        <span>Secure platform</span>
+        <span>Community-driven</span>
+        <span>Fast resolution</span>
+      </div>
+
+      <a href="signup.html" class="btn btn-light"> Get Started Now</a>
+    </section>
+    <!-- FOOTER -->
+    <footer class="footer">
+      <div class="container footer-grid">
+        <div>
+          <h4>CivicReport</h4>
+          <p>
+            Empowering communities through digital infrastructure reporting.
+            Making it easier for citizens and governments to work together.
+          </p>
+          <div class="social-icons">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+          </div>
+        </div>
+
+        <div>
+          <h4>Quick Links</h4>
+          <ul>
+            <li a href="#">Citizen Portal</li>
+            <li a href="#">Admin Portal</li>
+          </ul>
+        </div>
+
+        <div>
+          <h4>Support</h4>
+          <ul>
+            <li>Help Center</li>
+            <li>Contact Support</li>
+            <li>User Guide</li>
+            <li>FAQs</li>
+          </ul>
+        </div>
+
+        <div>
+          <h4>Contact Info</h4>
+          <ul>
+            <li>📍 Government Center</li>
+            <li>📞 (555) 555-1234</li>
+            <li>✉ support@civicreport.com</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">© 2026 CivicReport. All rights reserved.</div>
+    </footer>
+  </body>
+</html>

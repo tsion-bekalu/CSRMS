@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="icon" type="image/x-icon" href="image.png" />
+    <title>CSRMS — Citizen Profile</title>
+    <script src="https://unpkg.com/lucide@latest"></script>
+  </head>
+
+  <body>
+    <div class="page">
+      <header class="navbar">
+        <div class="brand">
+          <img class="logo-image" src="image.png" alt="CSRMS" />
+          <span class="logo-text">CSRMS</span>
+        </div>
+        <nav class="main-nav">
+          <a href="dashboard.html"
+            ><svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              data-lucide="layout-dashboard"
+              class="lucide lucide-layout-dashboard w-4 h-4"
+            >
+              <rect width="7" height="9" x="3" y="3" rx="1"></rect>
+              <rect width="7" height="5" x="14" y="3" rx="1"></rect>
+              <rect width="7" height="9" x="14" y="12" rx="1"></rect>
+              <rect width="7" height="5" x="3" y="16" rx="1"></rect></svg
+            >Dashboard</a
+          >
+          <a href="submit report.html"
+            ><svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              data-lucide="file-plus"
+              class="lucide lucide-file-plus w-4 h-4"
+            >
+              <path
+                d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"
+              ></path>
+              <path d="M14 2v5a1 1 0 0 0 1 1h5"></path>
+              <path d="M9 15h6"></path>
+              <path d="M12 18v-6"></path></svg
+            >Submit Report</a
+          >
+          <a href="track request.html"
+            ><svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              data-lucide="search"
+              class="lucide lucide-search w-4 h-4"
+            >
+              <path d="m21 21-4.34-4.34"></path>
+              <circle cx="11" cy="11" r="8"></circle></svg
+            >Track Reports</a
+          >
+          <a href="citizen profile.html" class="active"
+            ><svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              data-lucide="user"
+              class="lucide lucide-user w-4 h-4"
+            >
+              <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle></svg
+            >Profile</a
+          >
+        </nav>
+      </header>
+
+      <main style="max-width: 1000px; margin: 24px auto; padding: 0 20px">
+        <div class="profile-gradient-card">
+          <div class="profile-info">
+            <img
+              src="user-svgrepo-com.png"
+              class="profile-avatar-large"
+              alt="Profile"
+            />
+            <div>
+              <h2 style="color: white; margin: 0" id="profileName"></h2>
+              <p id="profileEmail"></p>
+            </div>
+          </div>
+          <div class="stats-group">
+            <div class="stat-item">
+              <h1 id="totalReports"></h1>
+              <p class="stat-label">Reports</p>
+            </div>
+          </div>
+        </div>
+
+        <section class="card" style="margin-top: 0; width: 100%">
+          <div
+            style="
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              margin-bottom: 20px;
+            "
+          >
+            <h3 style="font-weight: bold; font-size: 1.2rem">
+              Personal Information
+            </h3>
+            <button
+              class="btn"
+              id="editBtn"
+              style="width: auto; padding: 8px 20px"
+            >
+              Edit Profile
+            </button>
+          </div>
+
+          <form id="profileForm">
+            <div class="row">
+              <div class="row-child">
+                <label>First Name</label>
+                <input type="text" id="firstName" disabled />
+              </div>
+              <div class="row-child">
+                <label>Last Name</label>
+                <input type="text" id="lastName" disabled />
+              </div>
+            </div>
+
+            <label>Email Address</label>
+            <input type="email" id="email" disabled />
+
+            <div class="row">
+              <div class="row-child">
+                <label>Phone Number</label>
+                <input type="tel" id="phone" disabled />
+              </div>
+              <div class="row-child">
+                <label>City</label>
+                <input type="text" id="address" disabled />
+              </div>
+            </div>
+
+            <div class="buttons" id="actionButtons" style="display: none">
+              <button
+                type="button"
+                class="btn cancel"
+                onclick="window.location.reload()"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                class="btn submit"
+                id="saveChanges"
+                style="width: auto; padding: 12px 24px"
+              >
+                Save Changes
+              </button>
+            </div>
+          </form>
+        </section>
+      </main>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

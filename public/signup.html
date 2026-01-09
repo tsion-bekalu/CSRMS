@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="icon" type="image/x-icon" href="image.png" />
+    <title>CSRMS — Sign Up</title>
+  </head>
+  <body>
+    <div class="auth-wrapper">
+      <div class="auth-card">
+        <img src="image.png" alt="CSRMS" class="logo" />
+        <h2>Sign up</h2>
+        <p class="subtitle">Sign up to request community services</p>
+
+        <form id="signupForm">
+          <label for="fullname">Full name</label>
+          <input
+            id="fullname"
+            type="text"
+            placeholder="Your full name"
+            required
+          />
+
+          <label for="username">Username</label>
+          <input
+            id="username"
+            type="text"
+            placeholder="Choose a username"
+            required
+          />
+
+          <label for="email">Email address</label>
+          <input
+            id="email"
+            type="email"
+            placeholder="you@example.com"
+            required
+          />
+          <span class="error-message" id="emailError"></span>
+
+          <label for="password">Create password</label>
+          <div class="password-field">
+            <input
+              id="password"
+              type="password"
+              placeholder="••••••••"
+              required
+            />
+            <span class="toggle-eye" data-target="password">👁️</span>
+          </div>
+          <span class="error-message" id="passwordError"></span>
+
+          <label for="confirm">Confirm password</label>
+          <div class="password-field">
+            <input
+              id="confirm"
+              type="password"
+              placeholder="••••••••"
+              required
+            />
+            <span class="toggle-eye" data-target="confirm">👁️</span>
+          </div>
+
+          <div class="checkbox">
+            <input id="terms" type="checkbox" required />
+            <label for="terms" style="font-weight: normal"
+              >I agree to the Terms & Conditions and Privacy Policy.</label
+            >
+          </div>
+
+          <button class="btn login" type="submit">Create account</button>
+          <div class="auth-links">
+            Already have an account?<a href="login.html">Sign in</a>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

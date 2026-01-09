@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="icon" type="image/x-icon" href="image.png" />
+    <title>CSRMS — Verify Code</title>
+  </head>
+  <body>
+    <div class="auth-wrapper">
+      <div class="auth-card">
+        <img src="image.png" alt="CSRMS" class="logo" />
+        <h2>Verify code</h2>
+        <p class="subtitle">Enter the 6-digit code sent to your email</p>
+
+        <form id="verifyForm">
+          <div class="otp-inputs">
+            <input type="text" maxlength="1" />
+            <input type="text" maxlength="1" />
+            <input type="text" maxlength="1" />
+            <input type="text" maxlength="1" />
+            <input type="text" maxlength="1" />
+            <input type="text" maxlength="1" />
+          </div>
+          <button class="btn login" type="submit">Verify</button>
+        </form>
+        <p>
+          Didn't receive the code?
+          <span id="resendBtn" class="resend disabled">
+            Resend OTP (<span id="countdown">10:00</span>)
+          </span>
+        </p>
+      </div>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>

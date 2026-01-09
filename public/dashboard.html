@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/x-icon" href="image.png" />
+    <title>CSRMS - Citizen Dashboard</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      :root {
+        --primary: #2b5db7;
+        --primary-light: #4a7de0;
+        --primary-dark: #1a408a;
+        --secondary: #f0f4ff;
+        --accent: #4caf50;
+        --danger: #f44336;
+        --warning: #ff9800;
+        --light: #ffffff;
+        --dark: #333333;
+        --gray: #666666;
+        --light-gray: #f5f5f5;
+        --border: #e0e0e0;
+  --text-light: #6b7280;
+  --text-dark: #1f2937;
+  --bg: linear-gradient(to bottom, #e3f2fd, #ffffff);
+  --card-bg: #ffffff;
+  --border: #e5e7eb;
+        --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        --radius: 8px;
+        --transition: all 0.3s ease;
+      }
+
+      * {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text-dark);
+  min-height: 100vh;
+  padding: 0;
+}
+
+      /* Navbar */
+
+      .system-name {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--primary);
+      }
+
+      .navbar {
+  background: var(--card-bg);
+  border-bottom: 1px solid var(--border);
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 4.5rem;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.logo-image {
+  width: 40px;
+  height: 40px;
+}
+.logo-text {
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: var(--text-dark);
+}
+.main-nav {
+  display: flex;
+  gap: 24px;
+}
+.main-nav a {
+  text-decoration: none;
+  color: var(--text-light);
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 6px;
+}
+.main-nav a.active {
+  background: var(--primary);
+  color: #fff !important;
+  height: 40px;
+}
+
+svg {
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
+h3 {
+  font-weight: 500;
+}
+
+      .user-info {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+
+      .user-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: var(--primary);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+      }
+
+      .logout-btn {
+        background: var(--danger);
+        color: white;
+        border: none;
+        padding: 8px 20px;
+        border-radius: var(--radius);
+        cursor: pointer;
+        font-weight: 500;
+        transition: var(--transition);
+      }
+
+      .logout-btn:hover {
+        background: #d32f2f;
+        transform: translateY(-2px);
+      }
+
+      /* Dashboard Content */
+      .dashboard {
+        padding: 40px;
+        max-width: 1400px;
+        margin: 0 auto;
+      }
+
+      .welcome-banner {
+        background: linear-gradient(
+          135deg,
+          var(--primary),
+          var(--primary-light)
+        );
+        color: white;
+        padding: 40px;
+        border-radius: var(--radius);
+        margin-bottom: 30px;
+        box-shadow: var(--shadow);
+      }
+
+      .welcome-banner h1 {
+        font-size: 2.2rem;
+        margin-bottom: 10px;
+      }
+
+      .welcome-banner p {
+        opacity: 0.9;
+        font-size: 1.1rem;
+      }
+
+      /* Stats Grid */
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 25px;
+        margin: 40px;
+      }
+
+      .stat-card {
+        background: var(--light);
+        padding: 30px;
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        text-align: center;
+        transition: var(--transition);
+        border-top: 4px solid var(--primary);
+      }
+
+      .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+      }
+
+      .stat-icon {
+        font-size: 2.5rem;
+        margin-bottom: 15px;
+        opacity: 0.8;
+      }
+
+      .stat-number {
+        font-size: 2.8rem;
+        font-weight: 800;
+        color: var(--primary);
+        margin: 10px 0;
+        line-height: 1;
+      }
+
+      .stat-label {
+        color: var(--gray);
+        font-size: 1rem;
+        font-weight: 500;
+      }
+
+      /* Quick Actions */
+      .quick-actions {
+        margin-bottom: 40px;
+      }
+
+      .section-title {
+        font-size: 1.8rem;
+        color: var(--dark);
+        margin-bottom: 25px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .section-title::before {
+        content: "";
+        width: 6px;
+        height: 30px;
+        background: var(--primary);
+        border-radius: 3px;
+      }
+
+      .actions-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 25px;
+        margin: 40px;
+      }
+
+      .action-card {
+        background: var(--light);
+        padding: 30px;
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        text-decoration: none;
+        color: inherit;
+        transition: var(--transition);
+        border: 2px solid transparent;
+        display: block;
+      }
+
+      .action-card:hover {
+        transform: translateY(-5px);
+        border-color: var(--primary);
+        box-shadow: 0 10px 25px rgba(43, 93, 183, 0.15);
+      }
+
+      .action-icon {
+        font-size: 2.5rem;
+        margin-bottom: 20px;
+        color: var(--primary);
+      }
+
+      .action-card h3 {
+        font-size: 1.3rem;
+        margin-bottom: 10px;
+        color: var(--dark);
+      }
+
+      .action-card p {
+        color: var(--gray);
+        line-height: 1.6;
+      }
+
+      /* Recent Requests */
+      .recent-requests {
+        background: var(--light);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        padding: 30px;
+        margin-bottom: 40px;
+      }
+
+      .requests-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 25px;
+      }
+
+      .view-all {
+        color: var(--primary);
+        text-decoration: none;
+        font-weight: 600;
+        padding: 8px 16px;
+        border-radius: var(--radius);
+        transition: var(--transition);
+      }
+
+      .view-all:hover {
+        background: var(--secondary);
+      }
+
+      .requests-list {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .request-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 20px;
+        background: var(--light-gray);
+        border-radius: var(--radius);
+        border-left: 4px solid var(--primary);
+        transition: var(--transition);
+      }
+
+      .request-item:hover {
+        background: var(--secondary);
+        transform: translateX(5px);
+      }
+
+      .request-info {
+        flex: 1;
+      }
+
+      .request-title {
+        font-weight: 600;
+        margin-bottom: 5px;
+        color: var(--dark);
+      }
+
+      .request-meta {
+        display: flex;
+        gap: 20px;
+        color: var(--gray);
+        font-size: 0.9rem;
+      }
+
+      .status-badge {
+        padding: 6px 15px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        min-width: 100px;
+        text-align: center;
+      }
+
+      .status-pending {
+        background: #fff3cd;
+        color: #856404;
+      }
+      .status-in-progress {
+        background: #cce5ff;
+        color: #004085;
+      }
+      .status-resolved {
+        background: #d4edda;
+        color: #155724;
+      }
+      .status-closed {
+        background: #d1ecf1;
+        color: #0c5460;
+      }
+      .status-rejected {
+        background: #f8d7da;
+        color: #721c24;
+      }
+
+      .request-actions a {
+        color: var(--primary);
+        text-decoration: none;
+        font-weight: 500;
+        padding: 8px 16px;
+        border-radius: var(--radius);
+        transition: var(--transition);
+      }
+
+      .request-actions a:hover {
+        background: var(--secondary);
+      }
+
+      /* Empty State */
+      .empty-state {
+        text-align: center;
+        padding: 60px 40px;
+        color: var(--gray);
+      }
+
+      .empty-icon {
+        font-size: 4rem;
+        opacity: 0.3;
+        margin-bottom: 20px;
+      }
+
+      /* Loading State */
+      .loading {
+        text-align: center;
+        padding: 40px;
+        color: var(--gray);
+      }
+
+      .loading-spinner {
+        display: inline-block;
+        width: 40px;
+        height: 40px;
+        border: 4px solid var(--border);
+        border-radius: 50%;
+        border-top-color: var(--primary);
+        animation: spin 1s ease-in-out infinite;
+        margin-bottom: 20px;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      /* Responsive */
+      @media (max-width: 1024px) {
+        .dashboard {
+          padding: 30px;
+        }
+
+        .welcome-banner {
+          padding: 30px;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .navbar {
+          padding: 0 20px;
+          height: 60px;
+        }
+
+        .nav-links {
+          display: none;
+        }
+
+        .dashboard {
+          padding: 20px;
+        }
+
+        .welcome-banner h1 {
+          font-size: 1.8rem;
+        }
+
+        .request-item {
+          flex-direction: column;
+          gap: 15px;
+          align-items: flex-start;
+        }
+
+        .request-meta {
+          flex-direction: column;
+          gap: 5px;
+        }
+      }
+
+      @media (min-width: 769px) {
+        .mobile-menu-btn {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="navbar">
+        <div class="brand">
+          <img class="logo-image" src="image.png" alt="CSRMS" />
+          <span class="logo-text">CSRMS</span>
+        </div>
+        <nav class="main-nav">
+          <a href="dashboard.html" class="active"
+            ><svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              data-lucide="layout-dashboard"
+              class="lucide lucide-layout-dashboard w-4 h-4"
+            >
+              <rect width="7" height="9" x="3" y="3" rx="1"></rect>
+              <rect width="7" height="5" x="14" y="3" rx="1"></rect>
+              <rect width="7" height="9" x="14" y="12" rx="1"></rect>
+              <rect width="7" height="5" x="3" y="16" rx="1"></rect></svg
+            >Dashboard</a
+          >
+          <a href="submit report.html" 
+            ><svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              data-lucide="file-plus"
+              class="lucide lucide-file-plus w-4 h-4"
+            >
+              <path
+                d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"
+              ></path>
+              <path d="M14 2v5a1 1 0 0 0 1 1h5"></path>
+              <path d="M9 15h6"></path>
+              <path d="M12 18v-6"></path></svg
+            >Submit Report</a
+          >
+          <a href="track request.html"
+            ><svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              data-lucide="search"
+              class="lucide lucide-search w-4 h-4"
+            >
+              <path d="m21 21-4.34-4.34"></path>
+              <circle cx="11" cy="11" r="8"></circle></svg
+            >Track Reports</a
+          >
+          <a href="citizen profile.html"
+            ><svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              data-lucide="user"
+              class="lucide lucide-user w-4 h-4"
+            >
+              <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle></svg
+            >Profile</a
+          >
+        </nav>
+      </header>
+
+
+      <!-- Statistics -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon">📋</div>
+          <div class="stat-number" id="total-count">0</div>
+          <div class="stat-label">Total Requests</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon">⏳</div>
+          <div class="stat-number" id="pending-count">0</div>
+          <div class="stat-label">Pending</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon">✅</div>
+          <div class="stat-number" id="resolved-count">0</div>
+          <div class="stat-label">Resolved</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon">❌</div>
+          <div class="stat-number" id="rejected-count">0</div>
+          <div class="stat-label">Rejected</div>
+        </div>
+        
+      </div>
+
+      <!-- Quick Actions -->
+      <section class="quick-actions">
+        <h2 class="section-title">Quick Actions</h2>
+        <div class="actions-grid">
+          <a href="submit report.html" class="action-card">
+            <div class="action-icon">➕</div>
+            <h3>Submit New Request</h3>
+            <p>Report a new community issue or service request</p>
+          </a>
+
+          <a href="track request.html" class="action-card">
+            <div class="action-icon">🔍</div>
+            <h3>Track Requests</h3>
+            <p>Monitor the status of your submitted requests</p>
+          </a>
+
+          <a href="request-history.html" class="action-card">
+            <div class="action-icon">📜</div>
+            <h3>View History</h3>
+            <p>See all your past service requests and resolutions</p>
+          </a>
+
+          <a href="faq.html" class="action-card">
+            <div class="action-icon">❓</div>
+            <h3>FAQ & Help</h3>
+            <p>Get answers to common questions about the system</p>
+          </a>
+        </div>
+      </section>
+
+      <!-- Recent Requests -->
+      <section class="recent-requests">
+        <div class="requests-header">
+          <h2 class="section-title">Recent Requests</h2>
+          <a href="track request.html" class="view-all">View All →</a>
+        </div>
+
+        <div id="requestsContainer">
+          <div class="loading">
+            <div class="loading-spinner"></div>
+            <p>Loading your requests...</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+
+    
+  </body>
+</html>

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="icon" type="image/x-icon" href="image.png" />
+    <title>CSRMS — New Service Request</title>
+  </head>
+
+  <body>
+    <div class="page">
+      <header class="navbar">
+        <div class="brand">
+          <img class="logo-image" src="image.png" alt="CSRMS" />
+          <span class="logo-text">CSRMS</span>
+        </div>
+        <nav class="main-nav">
+          <a href="dashboard.html"
+            ><svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              data-lucide="layout-dashboard"
+              class="lucide lucide-layout-dashboard w-4 h-4"
+            >
+              <rect width="7" height="9" x="3" y="3" rx="1"></rect>
+              <rect width="7" height="5" x="14" y="3" rx="1"></rect>
+              <rect width="7" height="9" x="14" y="12" rx="1"></rect>
+              <rect width="7" height="5" x="3" y="16" rx="1"></rect></svg
+            >Dashboard</a
+          >
+          <a href="submit report.html" class="active"
+            ><svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              data-lucide="file-plus"
+              class="lucide lucide-file-plus w-4 h-4"
+            >
+              <path
+                d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"
+              ></path>
+              <path d="M14 2v5a1 1 0 0 0 1 1h5"></path>
+              <path d="M9 15h6"></path>
+              <path d="M12 18v-6"></path></svg
+            >Submit Report</a
+          >
+          <a href="track request.html"
+            ><svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              data-lucide="search"
+              class="lucide lucide-search w-4 h-4"
+            >
+              <path d="m21 21-4.34-4.34"></path>
+              <circle cx="11" cy="11" r="8"></circle></svg
+            >Track Reports</a
+          >
+          <a href="citizen profile.html"
+            ><svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              data-lucide="user"
+              class="lucide lucide-user w-4 h-4"
+            >
+              <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle></svg
+            >Profile</a
+          >
+        </nav>
+      </header>
+
+      <section class="card">
+        <h2>New Service Request</h2>
+        <p class="subtitle">Fill in the details below to submit your request</p>
+
+        <form id="requestForm">
+          <label for="title">Request title</label>
+          <input
+            id="title"
+            type="text"
+            placeholder="e.g. Broken street light"
+            required
+          /><span class="error-message" id="titleError"></span>
+
+          <label for="discription">Description</label>
+          <input id="description" type="text" />
+
+          <label for="category">Request category</label>
+          <select id="category" required>
+            <option value="">Select category</option>
+            <option>Water Supply</option>
+            <option>Waste Management</option>
+            <option>Road Maintenance</option>
+            <option>Street Lighting</option>
+            <option>Traffic & Safety</option>
+          </select>
+
+          <h3 style="margin-top: 18px">Location details</h3>
+          <div>
+            <div>
+              <label for="region">Region</label>
+              <input
+                id="region"
+                type="text"
+                placeholder="e.g. Addis Ababa"
+                required
+              />
+            </div>
+          </div>
+          <div class="row">
+            <div>
+              <label for="sub-city" class="row-child">Sub-city</label>
+              <input
+                id="sub-city"
+                type="text"
+                placeholder="e.g. Bole"
+                required
+              />
+            </div>
+            <div>
+              <label for="woreda" class="row-child">Woreda / Kebele</label>
+              <input
+                id="woreda"
+                type="text"
+                placeholder="e.g. Kebele 12"
+                required
+              />
+            </div>
+          </div>
+          <div>
+            <label for="attachment">Attachment</label>
+            <div class="upload">
+              <input id="attachment" type="file" required />
+              <small>Max 10 MB</small>
+            </div>
+          </div>
+
+          <div class="buttons">
+            <button type="button" class="btn cancel" id="cancelBtn">
+              Cancel
+            </button>
+            <button type="submit" class="btn submit">Submit</button>
+          </div>
+        </form>
+      </section>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="icon" type="image/x-icon" href="image.png" />
+    <title>CSRMS — Admin Login</title>
+  </head>
+  <body>
+    <div class="auth-wrapper">
+      <div class="auth-card">
+        <img src="image.png" alt="CSRMS" class="logo" />
+        <h2>Admin Login</h2>
+        <p class="subtitle">Access your account to update and track reports</p>
+
+        <form id="loginForm">
+          <label for="login-username">Admin Id</label>
+          <input
+            id="login-username"
+            type="text"
+            placeholder="UGR/0000/00"
+            required
+          />
+
+          <label for="login-password">Password</label>
+          <div class="password-field">
+            <input
+              id="login-password"
+              type="password"
+              placeholder="••••••••"
+              required
+            />
+            <span class="toggle-eye" data-target="login-password">👁️</span>
+          </div>
+          <a href="reset password.html" class="forgot">Forgot Password?</a>
+
+          <button class="btn login" type="submit">Login</button>
+        </form>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

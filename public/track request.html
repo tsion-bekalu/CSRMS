@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/x-icon" href="image.png" />
+    <title>CSRMS - Track Reports</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style></style>
+  </head>
+  <body>
+    <header class="navbar">
+      <div class="brand">
+        <img class="logo-image" src="image.png" alt="CSRMS" />
+        <span class="logo-text">CSRMS</span>
+      </div>
+      <nav class="main-nav">
+        <a href="dashboard.html"
+          ><svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            data-lucide="layout-dashboard"
+            class="lucide lucide-layout-dashboard w-4 h-4"
+          >
+            <rect width="7" height="9" x="3" y="3" rx="1"></rect>
+            <rect width="7" height="5" x="14" y="3" rx="1"></rect>
+            <rect width="7" height="9" x="14" y="12" rx="1"></rect>
+            <rect width="7" height="5" x="3" y="16" rx="1"></rect></svg
+          >Dashboard</a
+        >
+        <a href="submit report.html" 
+          ><svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            data-lucide="file-plus"
+            class="lucide lucide-file-plus w-4 h-4"
+          >
+            <path
+              d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"
+            ></path>
+            <path d="M14 2v5a1 1 0 0 0 1 1h5"></path>
+            <path d="M9 15h6"></path>
+            <path d="M12 18v-6"></path></svg
+          >Submit Report</a
+        >
+        <a href="track request.html" class="active"
+          ><svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            data-lucide="search"
+            class="lucide lucide-search w-4 h-4"
+          >
+            <path d="m21 21-4.34-4.34"></path>
+            <circle cx="11" cy="11" r="8"></circle></svg
+          >Track Reports</a
+        >
+        <a href="citizen profile.html"
+          ><svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            data-lucide="user"
+            class="lucide lucide-user w-4 h-4"
+          >
+            <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle></svg
+          >Profile</a
+        >
+      </nav>
+    </header>
+
+    <main class="content">
+      <div class="about-reports">
+          <h2>Track Reports</h2>
+      </div>
+
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-icon-box blue">
+            <i class="fa-solid fa-file-lines"></i>
+          </div>
+          <div class="stat-data">
+            <h3 id="totalReports">3</h3>
+            <p>Total Reports</p>
+            <small>All time submissions</small>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon-box orange">
+            <i class="fa-solid fa-clock"></i>
+          </div>
+          <div class="stat-data">
+            <h3 id="activeReports">2</h3>
+            <p>Active Reports</p>
+            <small>Pending resolution</small>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon-box green">
+            <i class="fa-solid fa-circle-check"></i>
+          </div>
+          <div class="stat-data">
+            <h3 id="resolvedReports">1</h3>
+            <p>Resolved</p>
+            <small>Successfully completed</small>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon-box dark-blue">
+            <i class="fa-solid fa-chart-line"></i>
+          </div>
+          <div class="stat-data">
+            <h3>0</h3>
+            <p>Recent Activity</p>
+            <small>Last 7 days</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-card overview-card">
+        <h4><i class="fa-solid fa-chart-simple"></i> Status Overview</h4>
+        <div class="progress-grid">
+          <div class="prog-item">
+            <div class="prog-label">
+              <div class="icon-box orange-tint">
+                <i class="fa-solid fa-clock"></i>
+              </div>
+              <span>1 Pending</span>
+            </div>
+            <div class="prog-bar">
+              <div class="fill orange" style="width: 33%"></div>
+            </div>
+            <small>33%</small>
+          </div>
+
+          <div class="prog-item">
+            <div class="prog-label">
+              <div class="icon-box blue-tint">
+                <i class="fa-solid fa-arrows-rotate"></i>
+              </div>
+              <span>1 In Progress</span>
+            </div>
+            <div class="prog-bar">
+              <div class="fill blue" style="width: 33%"></div>
+            </div>
+            <small>33%</small>
+          </div>
+
+          <div class="prog-item">
+            <div class="prog-label">
+              <div class="icon-box green-tint">
+                <i class="fa-solid fa-circle-check"></i>
+              </div>
+              <span>1 Resolved</span>
+            </div>
+            <div class="prog-bar">
+              <div class="fill green" style="width: 33%"></div>
+            </div>
+            <small>33%</small>
+          </div>
+
+          <div class="prog-item">
+            <div class="prog-label">
+              <div class="icon-box red-tint">
+                <i class="fa-solid fa-circle-xmark"></i>
+              </div>
+              <span>0 Rejected</span>
+            </div>
+            <div class="prog-bar">
+              <div class="fill red" style="width: 0%"></div>
+            </div>
+            <small>0%</small>
+          </div>
+        </div>
+      </div>
+      <div class="card-card table-card">
+        <div class="table-header">
+          <div class="header-left">
+            <h3><i class="fa-solid fa-magnifying-glass"></i> Track Reports</h3>
+            <p>3 of 3 reports</p>
+          </div>
+          
+        </div>
+
+        <input
+          type="text"
+          class="search-input"
+          placeholder="Search reports by ID, description, or location..."
+        />
+
+        <table class="reports-table">
+          <thead>
+            <tr>
+              <th>Report ID</th>
+              <th>Category</th>
+              <th>Description</th>
+              <th>Status</th>
+              <th>Priority</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody  id="reportsTableBody">
+            <tr>
+              <td class="id-cell">CR001238</td>
+              <td>Traffic & Safety</td>
+              <td>
+                <strong>Traffic light malfunctioning and stuck on red</strong
+                ><br />
+                Broadway and 5th Street intersection causing significant delays
+              </td>
+              <td>
+                <span class="badge status-rejected"
+                  ><i class="fa-solid fa-circle-xmark"></i> Rejected</span
+                >
+              </td>
+              <td><span class="prio-emergency">Emergency</span></td>
+              <td>Nov 5, 2025</td>
+              <td><i class="fa-solid fa-eye action-eye"></i></td>
+            </tr>
+            <tr>
+              <td class="id-cell">CR001237</td>
+              <td>Waste Management</td>
+              <td>
+                <strong>Overflowing garbage bins attracting pests</strong><br />
+                Central Park main entrance near the visitor center walkway
+              </td>
+              <td>
+                <span class="badge status-assigned"
+                  ><i class="fa-solid fa-user-check"></i> Assigned</span
+                >
+              </td>
+              <td><span class="prio-low">Low</span></td>
+              <td>Nov 4, 2025</td>
+              <td><i class="fa-solid fa-eye action-eye"></i></td>
+            </tr>
+            <tr>
+              <td class="id-cell">CR001235</td>
+              <td>Street Lighting</td>
+              <td>
+                <strong
+                  >Multiple street lights not working on residential
+                  street</strong
+                ><br />
+                Oak Avenue between 1st and 3rd blocks, visibility is very poor
+                at night
+              </td>
+              <td>
+                <span class="badge status-pending"
+                  ><i class="fa-solid fa-circle-exclamation"></i> Pending
+                  Review</span
+                >
+              </td>
+              <td><span class="prio-medium">Medium</span></td>
+              <td>Nov 3, 2025</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      
+        </div>
+      </div>
+    </main>
+    <script src="script.js"></script>
+  </body>
+</html>
