@@ -53,13 +53,17 @@ if (loginForm) {
       }
 
       const { token, user } = data;
-      console.log("Logged in as:", user);
 
-      // Optionally store token in localStorage or cookie
       localStorage.setItem("token", token);
+      localStorage.setItem("role", user.role);
 
-      // Redirect to dashboard
-      window.location.href = "admin_dashboard.html";
+      if (user.role === "Administrator") {
+        window.location.href = "admin_dashboard.html";
+      } else if (user.role === "Citizen") {
+        window.location.href = "dashboard.html";
+      } else {
+        alert("Unknown user role");
+      }
     } catch (err) {
       console.error(err);
       alert("An error occurred. Please try again.");
@@ -598,7 +602,10 @@ document.addEventListener("DOMContentLoaded", loadDashboard);
 async function loadReports() {
   const tbody = document.getElementById("reportsTableBody");
   const token = localStorage.getItem("token"); // or wherever you store JWT after login
-
+  if (!token) {
+    window.location.href = "login.html";
+    return;
+  }
   const res = await fetch("/api/reports", {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -855,17 +862,24 @@ async function refresh() {
 }
 
 // Filter listeners
-document.getElementById("btn-clear-filters").addEventListener("click", () => {
-  [
-    "status-filter",
-    "priority-filter",
-    "category-filter",
-    "from-date",
-    "to-date",
-    "location-search",
-  ].forEach((id) => (document.getElementById(id).value = ""));
-  refresh();
-});
+const clearBtn = document.getElementById("btn-clear-filters");
+
+if (clearBtn) {
+  clearBtn.addEventListener("click", () => {
+    [
+      "status-filter",
+      "priority-filter",
+      "category-filter",
+      "from-date",
+      "to-date",
+      "location-search",
+    ].forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) el.value = "";
+    });
+    refresh();
+  });
+}
 
 document.querySelectorAll(".filters input, .filters select").forEach((el) => {
   el.addEventListener("input", refresh);
