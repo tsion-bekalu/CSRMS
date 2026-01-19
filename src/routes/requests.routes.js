@@ -99,12 +99,12 @@ router.get("/", authMiddleware, async (req, res) => {
     }
 
     const { rows } = await db.query(
-      `SELECT sr.*, c.full_name AS citizen_name
-   FROM service_requests sr
-   LEFT JOIN citizens c ON sr.citizen_id = c.id
-   ${where}
-   ORDER BY ${sortCol} ${ord}
-   LIMIT 100`,
+      `SELECT sr.*, u.full_name AS citizen_name
+FROM service_requests sr
+JOIN citizens c ON sr.citizen_id = c.id
+JOIN users u ON u.id = c.user_id
+ORDER BY submission_date DESC;
+`,
       params
     );
 

@@ -6,6 +6,28 @@ const { authMiddleware } = require("../auth");
 router.get("/reports", authMiddleware, async (req, res) => {
   try {
     const userId = req.user.sub;
+    const role = req.user.role;
+
+    if (role === "Administrator") {
+      // Admin: fetch all reports
+      const result = await pool.query(
+        `SELECT 
+            sr.request_id,
+            sr.title,
+            sr.description,
+            sr.category,
+            sr.status,
+            sr.priority,
+            sr.submission_date,
+            u.full_name AS submitted_by
+         FROM service_requests sr
+         JOIN citizens c ON sr.citizen_id = c.id
+         JOIN users u ON c.user_id = u.id
+         ORDER BY sr.submission_date DESC`
+      );
+
+      return res.json({ reports: result.rows });
+    }
 
     const citizenResult = await pool.query(
       "SELECT id FROM citizens WHERE user_id = $1",

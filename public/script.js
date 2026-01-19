@@ -1,4 +1,4 @@
-// Helpers
+console.log("script.js loaded");
 
 // Toggle password visibility (used across auth pages)
 function togglePassword(id) {
@@ -72,25 +72,43 @@ const signupForm = document.getElementById("signupForm");
 if (signupForm) {
   signupForm.addEventListener("submit", async (e) => {
     e.preventDefault();
-    const res = await fetch("/api/auth/register", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        email: document.getElementById("email").value,
-        password: document.getElementById("password").value,
-        fullName: document.getElementById("fullname").value, // Match HTML id
-        phoneNumber: "000-000-0000", // Default value
-        address: "Default Address", // Default value
-        role: "Citizen", // Hardcoded role
-      }),
-    });
-    const data = await res.json();
 
-    if (res.ok) {
-      localStorage.setItem("pendingEmail", data.email);
-      window.location.href = "verify-code.html";
-    } else {
-      alert(data.error || "Signup failed");
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value;
+    const confirmPassword = document.getElementById("confirm").value;
+    const fullName = document.getElementById("fullname").value.trim();
+
+    // Check passwords match
+    if (password !== confirmPassword) {
+      alert("Passwords do not match.");
+      return;
+    }
+
+    try {
+      const res = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email,
+          password,
+          fullName, // Match HTML id
+          phoneNumber: "000-000-0000", // Default value
+          address: "Default Address", // Default value
+          role: "Citizen", // Hardcoded role
+        }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        localStorage.setItem("pendingEmail", data.email);
+        window.location.href = "verify-code.html";
+      } else {
+        alert(data.error || "Signup failed");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("An error occurred. Please try again.");
     }
   });
 }
@@ -495,6 +513,12 @@ if (resetForm) {
     const email = localStorage.getItem("pendingEmail");
     const otp = localStorage.getItem("resetOtp");
     const newPassword = document.getElementById("new-password").value;
+    const confirmPassword = document.getElementById("new-confirm").value;
+
+    if (newPassword !== confirmPassword) {
+      alert("Passwords do not match.");
+      return;
+    }
     try {
       const res = await fetch("/api/auth/reset-password", {
         method: "POST",
@@ -517,142 +541,17 @@ if (resetForm) {
   });
 }
 // Utility for authorized requests
-async function loadDashboard() {
-  if (!document.getElementById("total-count")) return;
-
-  const token = localStorage.getItem("token");
-
-  try {
-    // 1. Fetch Stats
-    const statsRes = await fetch("http://localhost:4000/api/requests/stats", {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    const stats = await statsRes.json();
-
-    // Update UI
-    document.getElementById("total-count").textContent = stats.total || 0;
-    document.getElementById("pending-count").textContent = stats.pending || 0;
-    document.getElementById("resolved-count").textContent = stats.resolved || 0;
-    document.getElementById("rejected-count").textContent = stats.rejected || 0;
-
-    // 2. Fetch Recent Requests
-    const reqsRes = await fetch("http://localhost:4000/api/requests/my", {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    const data = await reqsRes.json();
-    const container = document.getElementById("requestsContainer");
-
-    const requests = data.requests || [];
-
-    if (requests.length === 0) {
-      container.innerHTML = `<p class="empty-state">No recent requests found.</p>`;
-      return;
-    }
-
-    // Map the status to the CSS classes you have in your <style>
-    container.innerHTML = requests
-      .slice(0, 5)
-      .map((req) => {
-        const statusClass = req.status.toLowerCase().replace(/\s+/g, "-");
-        return `
-        <div class="request-item">
-          <div class="request-info">
-            <div class="request-title">${req.title}</div>
-            <div class="request-meta">
-              <span>${req.category}</span>
-              <span>${new Date(req.submission_date).toLocaleDateString()}</span>
-            </div>
-          </div>
-          <span class="status-badge status-${statusClass}">
-            ${req.status}
-          </span>
-        </div>
-      `;
-      })
-      .join("");
-  } catch (err) {
-    console.error("Dashboard load failed", err);
-    document.getElementById("requestsContainer").innerHTML =
-      "<p>Error loading data.</p>";
-  }
-}
-
-document.addEventListener("DOMContentLoaded", loadDashboard);
-
-async function loadReports() {
-  const tbody = document.getElementById("reportsTableBody");
-  const token = localStorage.getItem("token"); // or wherever you store JWT after login
-  if (!token) {
-    window.location.href = "login.html";
-    return;
-  }
-  const res = await fetch("/api/reports", {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-    credentials: "include",
-  });
-
-  if (!res.ok) {
-    alert("Failed to load reports" + res.status);
-    return;
-  }
-
-  const { reports } = await res.json();
-
-  document.getElementById("totalReports").textContent = reports.length;
-
-  const active = reports.filter(
-    (r) => r.status === "Pending" || r.status === "In Progress"
-  ).length;
-
-  const resolved = reports.filter((r) => r.status === "Resolved").length;
-
-  document.getElementById("activeReports").textContent = active;
-  document.getElementById("resolvedReports").textContent = resolved;
-
-  tbody.innerHTML = "";
-
-  reports.forEach((r) => {
-    const tr = document.createElement("tr");
-
-    tr.innerHTML = `
-      <td class="id-cell">${r.request_id}</td>
-      <td>${r.category}</td>
-      <td>
-        <strong>${r.title}</strong><br />
-        ${r.description}
-      </td>
-      <td>
-        <span class="badge status-${r.status.toLowerCase().replace(" ", "-")}">
-          ${r.status}
-        </span>
-      </td>
-      <td>
-        <span class="prio-${r.priority.toLowerCase()}">
-          ${r.priority}
-        </span>
-      </td>
-      <td>${new Date(r.submission_date).toDateString()}</td>
-      
-    `;
-
-    tbody.appendChild(tr);
-  });
-}
-
-document.addEventListener("DOMContentLoaded", loadReports);
-
+// ------------------ CONFIG ------------------
 const API_BASE =
   window.location.hostname === "localhost"
     ? "http://localhost:4000"
     : "https://your-deployed-backend-url.com";
-const TOKEN = localStorage.getItem("token"); // set after login
+
+const TOKEN = localStorage.getItem("token");
 
 if (!TOKEN) {
-  console.warn(
-    "No JWT token found in localStorage. Redirect to login or set token."
-  );
+  console.warn("No JWT token found. Redirecting to login.");
+  window.location.href = "login.html";
 }
 
 const headers = () => ({
@@ -660,7 +559,7 @@ const headers = () => ({
   Authorization: `Bearer ${TOKEN}`,
 });
 
-// Fetch requests with optional filters
+// ------------------ API FUNCTIONS ------------------
 async function fetchRequests({
   status,
   category,
@@ -673,33 +572,34 @@ async function fetchRequests({
   if (status) params.set("status", status);
   if (category) params.set("category", category);
   if (priority) params.set("priority", priority);
-  // Sorting defaults to submission_date desc; you can expose UI for sort/order if needed
   params.set("sort", "submission_date");
   params.set("order", "desc");
 
   const url = `${API_BASE}/api/requests?${params.toString()}`;
   const res = await fetch(url, { headers: headers() });
   if (!res.ok) throw new Error("Failed to fetch requests");
-  const data = await res.json();
 
-  // Client-side filter for date range and location (if backend doesn’t support yet)
-  let rows = data.requests || [];
+  console.log("Fetching requests...");
+  let rows = (await res.json()).requests || [];
+
+  // Ensure citizen_name exists for admin table
+  rows = rows.map((r) => ({ ...r, citizen_name: r.citizen_name || "You" }));
+
+  // Client-side filter
   if (fromDate)
     rows = rows.filter(
-      (r) => r.submission_date && r.submission_date.slice(0, 10) >= fromDate
+      (r) => (r.submission_date || "").slice(0, 10) >= fromDate
     );
   if (toDate)
-    rows = rows.filter(
-      (r) => r.submission_date && r.submission_date.slice(0, 10) <= toDate
-    );
+    rows = rows.filter((r) => (r.submission_date || "").slice(0, 10) <= toDate);
   if (location) {
     const q = location.toLowerCase();
     rows = rows.filter((r) => (r.location || "").toLowerCase().includes(q));
   }
+
   return rows;
 }
 
-// Update status via PATCH /api/requests/:requestId/status
 async function updateStatus(requestId, newStatus, note = "") {
   const res = await fetch(`${API_BASE}/api/requests/${requestId}/status`, {
     method: "PATCH",
@@ -713,7 +613,6 @@ async function updateStatus(requestId, newStatus, note = "") {
   return res.json();
 }
 
-// Close request via POST /api/requests/:requestId/close
 async function closeRequest(requestId) {
   const res = await fetch(`${API_BASE}/api/requests/${requestId}/close`, {
     method: "POST",
@@ -726,13 +625,12 @@ async function closeRequest(requestId) {
   return res.json();
 }
 
-// Render summary stats
+// ------------------ RENDER FUNCTIONS ------------------
 function renderSummary(rows) {
+  // Admin summary IDs (if exist)
   const total = rows.length;
   const pending = rows.filter((r) => r.status === "Pending").length;
   const inProgress = rows.filter((r) => r.status === "In Progress").length;
-
-  // Resolved today: resolution_date or submission_date if your schema differs
   const today = new Date().toISOString().slice(0, 10);
   const resolvedToday = rows.filter((r) => {
     if (r.status !== "Resolved") return false;
@@ -740,95 +638,193 @@ function renderSummary(rows) {
     return d === today;
   }).length;
 
-  document.getElementById("sum-total").textContent = total;
-  document.getElementById("sum-pending").textContent = pending;
-  document.getElementById("sum-inprogress").textContent = inProgress;
-  document.getElementById("sum-resolved-today").textContent = resolvedToday;
+  ["sum-total", "sum-pending", "sum-inprogress", "sum-resolved-today"].forEach(
+    (id, i) => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = [total, pending, inProgress, resolvedToday][i];
+    }
+  );
+
+  // Citizen dashboard summary
+  const totalEl = document.getElementById("total-count");
+  if (totalEl) totalEl.textContent = total;
+
+  const pendingEl = document.getElementById("pending-count");
+  if (pendingEl) pendingEl.textContent = pending;
+
+  const resolvedEl = document.getElementById("resolved-count");
+  if (resolvedEl) resolvedEl.textContent = resolvedToday;
+
+  const rejectedEl = document.getElementById("rejected-count");
+  if (rejectedEl)
+    rejectedEl.textContent = rows.filter((r) => r.status === "Rejected").length;
+
+  // Citizen Track Page summary
+  const totalReportsEl = document.getElementById("totalReports");
+  if (totalReportsEl) totalReportsEl.textContent = rows.length;
+
+  const activeReportsEl = document.getElementById("activeReports");
+  if (activeReportsEl) {
+    const active = rows.filter(
+      (r) => r.status === "Pending" || r.status === "In Progress"
+    ).length;
+    activeReportsEl.textContent = active;
+  }
+
+  const resolvedReportsEl = document.getElementById("resolvedReports");
+  if (resolvedReportsEl) {
+    resolvedReportsEl.textContent = rows.filter(
+      (r) => r.status === "Resolved"
+    ).length;
+  }
 }
 
-// Render table
-// Render table
 function renderTable(rows) {
-  const tbody = document.getElementById("report-table-body");
-  tbody.innerHTML = "";
+  // Admin table
+  const adminTbody = document.getElementById("report-table-body");
+  if (adminTbody) {
+    adminTbody.innerHTML = "";
+    rows.forEach((r) => {
+      const tr = document.createElement("tr");
+      const statusClass = `status-badge ${r.status.replace(/\s/g, "\\ ")}`;
+      const priorityClass = `priority-${r.priority.replace(/\s/g, "-")}`;
+      const date = (r.submission_date || "").slice(0, 10);
 
-  rows.forEach((r) => {
-    const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${r.title || "Untitled"}</td>
+        <td><span class="${statusClass}">${r.status}</span></td>
+        <td><span class="${priorityClass}">${r.priority}</span></td>
+        <td>${r.citizen_name}</td>
+        <td>${date}</td>
+        <td class="actions">
+          <select class="status-select">
+            <option value="">Update status...</option>
+            <option value="Pending">Pending</option>
+            <option value="In Progress">In Progress</option>
+            <option value="Resolved">Resolved</option>
+            <option value="Closed">Closed</option>
+          </select>
+          <button class="btn btn-update">Apply</button>
+          <button class="btn btn-close">Close</button>
+        </td>
+      `;
 
-    // Classes for badges
-    const statusClass = `status-badge ${r.status.replace(" ", "\\ ")}`;
-    const priorityClass = `priority-${r.priority}`;
+      const select = tr.querySelector(".status-select");
+      tr.querySelector(".btn-update").addEventListener("click", async () => {
+        const newStatus = select.value;
+        if (!newStatus) return alert("Select a status to apply.");
+        try {
+          await updateStatus(r.request_id, newStatus, "Updated via dashboard");
+          refresh();
+        } catch (e) {
+          alert(e.message);
+        }
+      });
 
-    // Display citizen name or fallback
-    const submittedBy = r.citizen_name || "Unknown";
-    const date = (r.submission_date || "").slice(0, 10);
+      tr.querySelector(".btn-close").addEventListener("click", async () => {
+        if (!confirm("Close this request?")) return;
+        try {
+          await closeRequest(r.request_id);
+          refresh();
+        } catch (e) {
+          alert(e.message);
+        }
+      });
 
-    // Use request_id as identifier
-    const requestId = r.request_id;
+      adminTbody.appendChild(tr);
+    });
+  }
 
-    tr.innerHTML = `
-      <td>${r.title || "Untitled"}</td>
-      <td><span class="${statusClass}">${r.status}</span></td>
-      <td><span class="${priorityClass}">${r.priority}</span></td>
-      <td>${submittedBy}</td>
-      <td>${date}</td>
-      <td class="actions">
-        <select class="status-select">
-          <option value="">Update status...</option>
-          <option value="Pending">Pending</option>
-          <option value="In Progress">In Progress</option>
-          <option value="Resolved">Resolved</option>
-          <option value="Closed">Closed</option>
-        </select>
-        <button class="btn btn-update">Apply</button>
-        <button class="btn btn-close">Close</button>
+  // Citizen dashboard
+  const citizenContainer = document.getElementById("requestsContainer");
+  if (citizenContainer) {
+    citizenContainer.innerHTML = "";
+    if (rows.length === 0) {
+      citizenContainer.innerHTML = `
+        <div class="empty-state">
+          <div class="empty-icon">📭</div>
+          <p>No requests found</p>
+        </div>`;
+      return;
+    }
+
+    rows.forEach((r) => {
+      const div = document.createElement("div");
+      div.className = "request-item";
+      div.innerHTML = `
+        <div class="request-info">
+          <div class="request-title">${r.title}</div>
+          <div class="request-meta">
+            <span>Category: ${r.category}</span>
+            <span>Priority: ${r.priority}</span>
+            <span>Status: <span class="status-badge status-${r.status
+              .toLowerCase()
+              .replace(" ", "-")}">${r.status}</span></span>
+            <span>Submitted: ${new Date(
+              r.submission_date
+            ).toDateString()}</span>
+          </div>
+        </div>
+        <div class="request-actions">
+          <a href="track request.html?id=${r.request_id}">View Details</a>
+        </div>
+      `;
+      citizenContainer.appendChild(div);
+    });
+  }
+
+  const citizenTbody = document.getElementById("reportsTableBody");
+  if (citizenTbody) {
+    citizenTbody.innerHTML = ""; // ← THIS IS CRITICAL
+
+    if (rows.length === 0) {
+      citizenTbody.innerHTML = `
+      <tr>
+        <td colspan="6" style="text-align:center;">No reports found</td>
+      </tr>`;
+      return;
+    }
+
+    rows.forEach((r) => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+      <td class="id-cell">${r.request_id}</td>
+      <td>${r.category}</td>
+      <td>
+        <strong>${r.title}</strong><br>
+        ${r.description}
       </td>
+      <td>
+        <span class="badge status-${r.status.toLowerCase().replace(" ", "-")}">
+          ${r.status}
+        </span>
+      </td>
+      <td>
+        <span class="prio-${r.priority.toLowerCase().replace(" ", "-")}">
+          ${r.priority}
+        </span>
+      </td>
+      <td>${new Date(r.submission_date).toDateString()}</td>
     `;
-
-    // Event listeners for status update
-    const select = tr.querySelector(".status-select");
-    const btnUpdate = tr.querySelector(".btn-update");
-    const btnClose = tr.querySelector(".btn-close");
-
-    btnUpdate.addEventListener("click", async () => {
-      const newStatus = select.value;
-      if (!newStatus) return alert("Select a status to apply.");
-      try {
-        await updateStatus(requestId, newStatus, "Updated via dashboard");
-        await refresh();
-      } catch (e) {
-        alert(e.message);
-      }
+      citizenTbody.appendChild(tr);
     });
-
-    btnClose.addEventListener("click", async () => {
-      if (!confirm("Close this request?")) return;
-      try {
-        await closeRequest(requestId);
-        await refresh();
-      } catch (e) {
-        alert(e.message);
-      }
-    });
-
-    tbody.appendChild(tr);
-  });
+  }
 }
 
-// Apply filters and refresh data
+// ------------------ REFRESH ------------------
 async function refresh() {
-  const status = document.getElementById("status-filter").value || "";
-  const priority = document.getElementById("priority-filter").value || "";
-  const category = document.getElementById("category-filter").value || "";
-  const fromDate = document.getElementById("from-date").value || "";
-  const toDate = document.getElementById("to-date").value || "";
-  const location = document.getElementById("location-search").value || "";
+  const status = document.getElementById("status-filter")?.value || "";
+  const priority = document.getElementById("priority-filter")?.value || "";
+  const category = document.getElementById("category-filter")?.value || "";
+  const fromDate = document.getElementById("from-date")?.value || "";
+  const toDate = document.getElementById("to-date")?.value || "";
+  const location = document.getElementById("location-search")?.value || "";
 
   try {
     const rows = await fetchRequests({
       status,
-      category,
       priority,
+      category,
       fromDate,
       toDate,
       location,
@@ -837,62 +833,52 @@ async function refresh() {
     renderTable(rows);
   } catch (e) {
     console.error(e);
+    const citizenContainer = document.getElementById("requestsContainer");
+    if (citizenContainer)
+      citizenContainer.innerHTML = `<div class="loading"><p>Failed to load requests</p></div>`;
     alert("Failed to load data. Check your token and API.");
   }
 }
 
-// Filter listeners
-const clearBtn = document.getElementById("btn-clear-filters");
-
-if (clearBtn) {
-  clearBtn.addEventListener("click", () => {
-    [
-      "status-filter",
-      "priority-filter",
-      "category-filter",
-      "from-date",
-      "to-date",
-      "location-search",
-    ].forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) el.value = "";
-    });
-    refresh();
-  });
-}
-
+// ------------------ EVENT LISTENERS ------------------
 document.querySelectorAll(".filters input, .filters select").forEach((el) => {
   el.addEventListener("input", refresh);
   el.addEventListener("change", refresh);
 });
 
-// Quick actions (example behaviors)
-
-const totalReportsEl = document.getElementById("totalReports");
-if (totalReportsEl) {
-  totalReportsEl.textContent = reports.length;
-}
-const urgentBtn = document.getElementById("btn-urgent");
-if (urgentBtn) {
-  urgentBtn.addEventListener("click", () => {
-    document.getElementById("priority-filter").value = "Critical";
-    refresh();
+document.getElementById("btn-clear-filters")?.addEventListener("click", () => {
+  [
+    "status-filter",
+    "priority-filter",
+    "category-filter",
+    "from-date",
+    "to-date",
+    "location-search",
+  ].forEach((id) => {
+    const el = document.getElementById(id);
+    if (el) el.value = "";
   });
-}
-
-document.getElementById("btn-assign").addEventListener("click", () => {
-  alert(
-    "Assignment UI not implemented—hook into your staff assignment endpoint."
-  );
-});
-document.getElementById("btn-send-updates").addEventListener("click", () => {
-  alert(
-    "Bulk updates not implemented—use status update per row or add a batch endpoint."
-  );
-});
-document.getElementById("btn-generate-report").addEventListener("click", () => {
-  alert("Generate report—hook into your reporting endpoint to export CSV/PDF.");
+  refresh();
 });
 
-// Initial load
-refresh();
+document.getElementById("btn-urgent")?.addEventListener("click", () => {
+  document.getElementById("priority-filter").value = "Critical";
+  refresh();
+});
+
+document
+  .getElementById("btn-assign")
+  ?.addEventListener("click", () =>
+    alert("Assignment UI not implemented yet.")
+  );
+document
+  .getElementById("btn-send-updates")
+  ?.addEventListener("click", () => alert("Bulk updates not implemented yet."));
+document
+  .getElementById("btn-generate-report")
+  ?.addEventListener("click", () =>
+    alert("Generate report—hook into your reporting endpoint.")
+  );
+
+// ------------------ INITIAL LOAD ------------------
+document.addEventListener("DOMContentLoaded", refresh);
