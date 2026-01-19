@@ -1,6 +1,4 @@
-// =========================
 // Helpers
-// =========================
 
 // Toggle password visibility (used across auth pages)
 function togglePassword(id) {
@@ -26,9 +24,7 @@ async function apiFetch(url, options = {}) {
   return fetch(`http://localhost:4000${url}`, { ...options, headers });
 }
 
-// =========================
 // Auth: Login
-// =========================
 const loginForm = document.getElementById("loginForm");
 if (loginForm) {
   loginForm.addEventListener("submit", async (e) => {
@@ -71,9 +67,7 @@ if (loginForm) {
   });
 }
 
-// =========================
 // Auth: Signup
-// =========================
 const signupForm = document.getElementById("signupForm");
 if (signupForm) {
   signupForm.addEventListener("submit", async (e) => {
@@ -101,9 +95,7 @@ if (signupForm) {
   });
 }
 
-// =========================
 // Submit Report
-// =========================
 document.addEventListener("DOMContentLoaded", () => {
   const requestForm = document.getElementById("requestForm");
   const titleInput = document.getElementById("title");
@@ -225,9 +217,7 @@ if (searchInput && reportsTableBody) {
   });
 }
 
-// =========================
 // Profile
-// =========================
 async function loadProfile() {
   const res = await apiFetch("/api/user/profile");
   const data = await res.json();
@@ -316,9 +306,7 @@ if (editBtn && profileForm) {
     });
   }
 }
-// =========================
 // Notifications
-// =========================
 async function loadNotifications() {
   const res = await apiFetch("/api/notifications");
   const data = await res.json();
@@ -334,9 +322,7 @@ if (document.getElementById("notificationsList")) {
   loadNotifications();
 }
 
-// =========================
 // Navbar Active State
-// =========================
 (function setActiveNav() {
   const links = document.querySelectorAll(".main-nav a");
   const path = location.pathname.split("/").pop();
@@ -351,9 +337,7 @@ if (document.getElementById("notificationsList")) {
   });
 })();
 
-// =========================
 // Auth: Forgot Password
-// =========================
 const forgotForm = document.getElementById("forgotForm");
 if (forgotForm) {
   forgotForm.addEventListener("submit", async (e) => {
@@ -385,9 +369,7 @@ if (forgotForm) {
   });
 }
 
-// =========================
 //otp verification
-// =========================
 document.addEventListener("DOMContentLoaded", () => {
   const verifyForm = document.getElementById("verifyForm");
   const inputs = document.querySelectorAll(".otp-inputs input");
@@ -505,9 +487,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-// =========================
 // Reset Password
-// =========================
 const resetForm = document.getElementById("resetForm");
 if (resetForm) {
   resetForm.addEventListener("submit", async (e) => {
